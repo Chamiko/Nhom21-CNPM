@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/vintage_background">
+
+    <ImageView
+        android:id="@+id/minion"
+        android:layout_width="200dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/minion" />
+
+    <TextView
+        android:id="@+id/txtTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/minion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Let's Cook"
+        android:textColor="#4d290f"
+        android:textSize="54dp" />
+
+    <TextView
+        android:id="@+id/txtLDtips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTittle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#4d290f"
+        android:textSize="16dp"
+        android:textStyle="italic" />
+
+</RelativeLayout>
