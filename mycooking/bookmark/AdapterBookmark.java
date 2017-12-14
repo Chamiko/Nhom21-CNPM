@@ -31,7 +31,7 @@ public class AdapterBookmark extends RecyclerView.Adapter<AdapterBookmark.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View myView = LayoutInflater.from(context).inflate(R.layout.row_bookmark, parent, false);
+        View myView = LayoutInflater.from(context).inflate(R.layout.row_eating, parent, false);
         AdapterBookmark.ViewHolder viewHolder = new AdapterBookmark.ViewHolder(myView);
         return viewHolder;
     }
@@ -40,22 +40,22 @@ public class AdapterBookmark extends RecyclerView.Adapter<AdapterBookmark.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Eating obj = eatings.get(position);
 
-        holder.txtNameEBm.setText(eatings.get(position).getName());
+        holder.txtNameEating.setText(eatings.get(position).getName());
 
         byte[] img = eatings.get(position).getImg();
         Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-        holder.imgEBm.setImageBitmap(bitmap);
-        holder.imgEBm.setOnClickListener(new View.OnClickListener() {
+        holder.imgEating.setImageBitmap(bitmap);
+        holder.imgEating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((MainActivity) context).loadFragment("total", obj);
             }
         });
 
-        holder.txtNameEBm.setOnClickListener(new View.OnClickListener() {
+        holder.txtNameEating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.imgEBm.performClick();
+                holder.imgEating.performClick();
             }
         });
     }
@@ -66,13 +66,13 @@ public class AdapterBookmark extends RecyclerView.Adapter<AdapterBookmark.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNameEBm;
-        ImageView imgEBm;
+        TextView txtNameEating;
+        ImageView imgEating;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtNameEBm = (TextView) itemView.findViewById(R.id.txtNameEBm);
-            imgEBm = (ImageView) itemView.findViewById(R.id.imgEBm);
+            txtNameEating = (TextView) itemView.findViewById(R.id.txtNameEating);
+            imgEating = (ImageView) itemView.findViewById(R.id.imgEating);
         }
     }
 }

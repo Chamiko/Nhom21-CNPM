@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by BanhNhanDau on 11/08/2017.
  */
 
-public class FragmentEating extends BaseFragment implements AdapterEating.onBookmarkListener {
+public class FragmentEating extends BaseFragment  {
     private RecyclerView rcvEating;
     ArrayList<Eating> eatings = new ArrayList<>();
     public AdapterEating adapter;
@@ -73,9 +73,11 @@ public class FragmentEating extends BaseFragment implements AdapterEating.onBook
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rcvEating.setLayoutManager(layoutManager);
-        adapter = new AdapterEating(getContext(), eatings, this);
+        adapter = new AdapterEating(getContext(),eatings);
         rcvEating.setAdapter(adapter);
+
         getDataEating();
+
     }
 
     private void getDataEating() {
@@ -104,26 +106,32 @@ public class FragmentEating extends BaseFragment implements AdapterEating.onBook
 
             eatings.add(eating);
         }
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onBookmarkListener(int position) {
-        Eating obj = eatings.get(position);
-        MainActivity.dataBaseHelper.opendatabase();
-        if (obj.getBookmark() == 0) {
-            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
-            eatings.get(position).setBookmark(1);
-            Toast.makeText(getActivity(),"Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        } else {
-            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
-            eatings.get(position).setBookmark(0);
-            Toast.makeText(getActivity(),"Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        }
-        MainActivity.dataBaseHelper.close();
+        //if(eatings.size()==0)
+            //getDataOnline()
+            //if CheckInternet
+            //co getdataongline
+            //ko thongbao ko co data
 
         adapter.notifyDataSetChanged();
     }
+
+//    @Override
+//    public void onBookmarkListener(int position) {
+//        Eating obj = eatings.get(position);
+//        MainActivity.dataBaseHelper.opendatabase();
+//        if (obj.getBookmark() == 0) {
+//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
+//            eatings.get(position).setBookmark(1);
+//            Toast.makeText(getActivity(),"Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//        } else {
+//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
+//            eatings.get(position).setBookmark(0);
+//            Toast.makeText(getActivity(),"Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//        }
+//        MainActivity.dataBaseHelper.close();
+//
+//        adapter.notifyDataSetChanged();
+//    }
 
     public void updateData(){
         eatings.clear();

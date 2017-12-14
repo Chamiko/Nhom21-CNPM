@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by BaoND on 11/28/2017.
  */
 
-public class FragmentSearch extends BaseFragment implements AdapterEating.onBookmarkListener {
+public class FragmentSearch extends BaseFragment  {
     private RecyclerView rcvSearch;
     ArrayList<Eating> eatings = new ArrayList<>();
     public AdapterEating adapter;
@@ -70,7 +70,7 @@ public class FragmentSearch extends BaseFragment implements AdapterEating.onBook
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rcvSearch.setLayoutManager(layoutManager);
-        adapter = new AdapterEating(getContext(), eatings, this);
+        adapter = new AdapterEating(getContext(), eatings);
         rcvSearch.setAdapter(adapter);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,28 +121,28 @@ public class FragmentSearch extends BaseFragment implements AdapterEating.onBook
     }
 
 
-    @Override
-    public void onBookmarkListener(int position) {
-        Eating obj = eatings.get(position);
-        MainActivity.dataBaseHelper.opendatabase();
-        if (obj.getBookmark() == 0) {
-            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
-            eatings.get(position).setBookmark(1);
-            Toast.makeText(getActivity(),"Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        } else {
-            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
-            eatings.get(position).setBookmark(0);
-            Toast.makeText(getActivity(),"Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        }
-        MainActivity.dataBaseHelper.close();
-
-        adapter.notifyDataSetChanged();
-    }
-
-    public void updateData(){
-        eatings.clear();
-        getDataSearch();
-    }
+//    @Override
+//    public void onBookmarkListener(int position) {
+//        Eating obj = eatings.get(position);
+//        MainActivity.dataBaseHelper.opendatabase();
+//        if (obj.getBookmark() == 0) {
+//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
+//            eatings.get(position).setBookmark(1);
+//            Toast.makeText(getActivity(),"Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//        } else {
+//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
+//            eatings.get(position).setBookmark(0);
+//            Toast.makeText(getActivity(),"Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//        }
+//        MainActivity.dataBaseHelper.close();
+//
+//        adapter.notifyDataSetChanged();
+//    }
+//
+//    public void updateData(){
+//        eatings.clear();
+//        getDataSearch();
+//    }
 
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =

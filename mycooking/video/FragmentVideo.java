@@ -39,7 +39,8 @@ public class FragmentVideo extends BaseFragment {
     TextView txtTitle;
     ImageView menu, imgThumnail;
 
-    String API_KEY = "AIzaSyC2qV7iBDU40TdIU3-b4j1MpzBFTjKhQv0";
+    //String API_KEY = "AIzaSyC2qV7iBDU40TdIU3-b4j1MpzBFTjKhQv0";
+    public static final String API_KEY = "AIzaSyDe3M_3jUpKhHvc8EdZ3Uvt0KS-4rSnabE";
     String ID_PLAY_LIST = "PLIqf0aj-QeToj2hsz6cxnuSO4hqtB_GEx";
     String urlGetJson = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId="+ID_PLAY_LIST+"&key="+API_KEY+"&maxResults=50";
 

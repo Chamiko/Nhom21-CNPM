@@ -23,12 +23,12 @@ import java.util.ArrayList;
 public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder> {
     Context context;
     ArrayList<Eating> eatings;
-    onBookmarkListener listener;
+//    onBookmarkListener listener;
 
-    public AdapterEating(Context context, ArrayList<Eating> eatings, onBookmarkListener listener) {
+    public AdapterEating(Context context, ArrayList<Eating> eatings) {
         this.context = context;
         this.eatings = eatings;
-        this.listener = listener;
+        //this.listener = listener;
     }
 
     @Override
@@ -52,17 +52,17 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
             }
         });
 
-        if (obj.getBookmark() == 1){
-            Picasso.with(context).load(R.drawable.red_heart_icon_full).into(holder.imgBookmark);
-        }else{
-            Picasso.with(context).load(R.drawable.red_heart_icon_empty).into(holder.imgBookmark);
-        }
-        holder.imgBookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onBookmarkListener(position);
-            }
-        });
+//        if (obj.getBookmark() == 1){
+//            Picasso.with(context).load(R.drawable.red_heart_icon_full).into(holder.imgBookmark);
+//        }else{
+//            Picasso.with(context).load(R.drawable.red_heart_icon_empty).into(holder.imgBookmark);
+//        }
+//        holder.imgBookmark.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                listener.onBookmarkListener(position);
+//            }
+//        });
         holder.txtNameEating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,11 +84,11 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
             super(itemView);
             txtNameEating = (TextView) itemView.findViewById(R.id.txtNameEating);
             imgEating = (ImageView) itemView.findViewById(R.id.imgEating);
-            imgBookmark = (ImageView) itemView.findViewById(R.id.imgBookmark);
+//            imgBookmark = (ImageView) itemView.findViewById(R.id.imgBookmark);
         }
     }
 
-    public interface onBookmarkListener{
-        void onBookmarkListener(int position);
-    }
+//    public interface onBookmarkListener{
+//        void onBookmarkListener(int position);
+//    }
 }

@@ -49,6 +49,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         boolean dbexist = checkdatabase();
         if(!dbexist) {
             this.getReadableDatabase();
+
             try {
                 copydatabase();
             } catch(IOException e) {
