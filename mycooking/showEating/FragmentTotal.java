@@ -6,17 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
-import com.example.banhnhandau.mycooking.bookmark.FragmentBookmark;
 import com.example.banhnhandau.mycooking.eating.Eating;
-import com.example.banhnhandau.mycooking.eating.FragmentEating;
-import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
 
 import java.util.ArrayList;
@@ -98,35 +93,35 @@ public class FragmentTotal extends BaseFragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
 
-        bookmarkTool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (obj.getBookmark() == 0) {
-                    obj.setBookmark(1);
-                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_full);
-                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
-                    Toast.makeText(getActivity(), "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                } else {
-                    obj.setBookmark(0);
-                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_empty);
-                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
-                    Toast.makeText(getActivity(), "Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                }
-                updateBookmark();
-            }
-        });
+//        bookmarkTool.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (obj.getBookmark() == 0) {
+//                    obj.setBookmark(1);
+//                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_full);
+//                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
+//                    Toast.makeText(getActivity(), "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    obj.setBookmark(0);
+//                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_empty);
+//                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
+//                    Toast.makeText(getActivity(), "Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//                }
+//                updateBookmark();
+//            }
+//        });
     }
 
 
-    public void updateBookmark() {
-        FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");
-        if (fragmentBookmark != null) {
-            fragmentBookmark.updateMyself();
-        }
-
-        FragmentEating fragmentEating = (FragmentEating) getFragmentManager().findFragmentByTag("eating");
-        if (fragmentEating != null) {
-            fragmentEating.updateData();
-        }
-    }
+//    public void updateBookmark() {
+//        FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");
+//        if (fragmentBookmark != null) {
+//            fragmentBookmark.updateMyself();
+//        }
+//
+//        FragmentEating fragmentEating = (FragmentEating) getFragmentManager().findFragmentByTag("eating");
+//        if (fragmentEating != null) {
+//            fragmentEating.updateData();
+//        }
+//    }
 }

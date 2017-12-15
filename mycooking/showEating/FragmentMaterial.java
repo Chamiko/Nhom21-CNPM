@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.widget.TextView;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
-import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.R;
+import com.example.banhnhandau.mycooking.eating.Eating;
 
 /**
  * Created by HoangAnh on 11/11/2017.

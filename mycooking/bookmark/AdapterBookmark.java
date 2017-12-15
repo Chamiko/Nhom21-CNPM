@@ -42,22 +42,22 @@ public class AdapterBookmark extends RecyclerView.Adapter<AdapterBookmark.ViewHo
 
         holder.txtNameEating.setText(eatings.get(position).getName());
 
-        byte[] img = eatings.get(position).getImg();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-        holder.imgEating.setImageBitmap(bitmap);
-        holder.imgEating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) context).loadFragment("total", obj);
-            }
-        });
-
-        holder.txtNameEating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.imgEating.performClick();
-            }
-        });
+//        byte[] img = eatings.get(position).getImg();
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+//        holder.imgEating.setImageBitmap(bitmap);
+//        holder.imgEating.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((MainActivity) context).loadFragment("total", obj);
+//            }
+//        });
+//
+//        holder.txtNameEating.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                holder.imgEating.performClick();
+//            }
+//        });
     }
 
     @Override

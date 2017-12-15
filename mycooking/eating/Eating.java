@@ -4,29 +4,35 @@ package com.example.banhnhandau.mycooking.eating;
  * Created by BanhNhanDau on 11/07/2017.
  */
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Eating {
+
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("material")
+    @Expose
     private String material;
+    @SerializedName("making")
+    @Expose
     private String making;
-    private byte[] img;
+    @SerializedName("tips")
+    @Expose
     private String tips;
+    @SerializedName("idType")
+    @Expose
     private int idType;
+    @SerializedName("bookmark")
+    @Expose
     private int bookmark;
-
-    public Eating(int id, String name, String material, String making, byte[] img, String tips, int idType, int bookmark) {
-        this.id = id;
-        this.name = name;
-        this.material = material;
-        this.making = making;
-        this.img = img;
-        this.tips = tips;
-        this.idType = idType;
-        this.bookmark = bookmark;
-    }
-
-    public Eating() {
-    }
+    @SerializedName("image")
+    @Expose
+    private String image;
 
     public int getId() {
         return id;
@@ -60,14 +66,6 @@ public class Eating {
         this.making = making;
     }
 
-    public byte[] getImg() {
-        return img;
-    }
-
-    public void setImg(byte[] img) {
-        this.img = img;
-    }
-
     public String getTips() {
         return tips;
     }
@@ -91,4 +89,14 @@ public class Eating {
     public void setBookmark(int bookmark) {
         this.bookmark = bookmark;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }
+

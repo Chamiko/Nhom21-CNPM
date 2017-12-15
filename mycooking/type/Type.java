@@ -1,22 +1,23 @@
 package com.example.banhnhandau.mycooking.type;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by BanhNhanDau on 11/04/2017.
  */
 
 public class Type {
+
+    @SerializedName("idType")
+    @Expose
     private int idType;
+    @SerializedName("nameType")
+    @Expose
     private String nameType;
-    private byte[] imgType;
-
-    public Type(int idType, String nameType, byte[] imgType) {
-        this.idType = idType;
-        this.nameType = nameType;
-        this.imgType = imgType;
-    }
-
-    public Type() {
-    }
+    @SerializedName("imgType")
+    @Expose
+    private String imgType;
 
     public int getIdType() {
         return idType;
@@ -34,11 +35,12 @@ public class Type {
         this.nameType = nameType;
     }
 
-    public byte[] getImgType() {
+    public String getImgType() {
         return imgType;
     }
 
-    public void setImgType(byte[] imgType) {
+    public void setImgType(String imgType) {
         this.imgType = imgType;
     }
 }
+

@@ -15,17 +15,18 @@ import com.example.banhnhandau.mycooking.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by BanhNhanDau on 11/07/2017.
  */
 
 public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder> {
-    Context context;
-    ArrayList<Eating> eatings;
+    private Context context;
+    private List<Eating> eatings;
 //    onBookmarkListener listener;
 
-    public AdapterEating(Context context, ArrayList<Eating> eatings) {
+    public AdapterEating(Context context, List<Eating> eatings) {
         this.context = context;
         this.eatings = eatings;
         //this.listener = listener;
@@ -40,15 +41,14 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Eating obj = eatings.get(position);
-        holder.txtNameEating.setText(eatings.get(position).getName());
-        byte[] img = eatings.get(position).getImg();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-        holder.imgEating.setImageBitmap(bitmap);
+        final Eating eating = eatings.get(position);
+        holder.txtNameEating.setText(eating.getName());
+        Picasso.with(context).load(eating.getImage()).into(holder.imgEating);
+
         holder.imgEating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).loadFragment("total", obj);
+                ((MainActivity) context).loadFragment("total", eating);
             }
         });
 
@@ -80,6 +80,7 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNameEating;
         ImageView imgBookmark, imgEating;
+
         public ViewHolder(View itemView) {
             super(itemView);
             txtNameEating = (TextView) itemView.findViewById(R.id.txtNameEating);

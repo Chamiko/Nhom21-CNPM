@@ -1,5 +1,6 @@
 package com.example.banhnhandau.mycooking;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment{
     public abstract int getViewLayot();
     public View myView;
+    public ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -23,7 +25,11 @@ public abstract class BaseFragment extends Fragment{
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.setTitle("");
+
     }
 }

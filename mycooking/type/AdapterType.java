@@ -14,18 +14,20 @@ import android.widget.TextView;
 import com.example.banhnhandau.mycooking.comon.StaticVariable;
 import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by BanhNhanDau on 11/04/2017.
  */
 
 public class AdapterType  extends RecyclerView.Adapter<AdapterType.ViewHolder> {
-    Context context;
-    ArrayList<Type> types;
+    private Context context;
+    private List<Type> types;
 
-    public AdapterType(Context context, ArrayList<Type> types) {
+    public AdapterType(Context context, List<Type> types) {
         this.context = context;
         this.types = types;
     }
@@ -40,14 +42,12 @@ public class AdapterType  extends RecyclerView.Adapter<AdapterType.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Type type = types.get(position);
-        holder.txtNameType.setText(types.get(position).getNameType());
+        holder.txtNameType.setText(type.getNameType());
         Typeface custom_font = Typeface.createFromAsset(context.getAssets(), "SVN-Archaic-1897.ttf");
         holder.txtNameType.setTypeface(custom_font);
-        //chuyen byte[] -> bitmap + setImage
-        byte[] image = types.get(position).getImgType();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        Bitmap resized = StaticVariable.scaleDown(bitmap, 300, true);
-        holder.imgType.setImageBitmap(resized);
+
+        Picasso.with(context).load(type.getImgType()).into(holder.imgType);
+
         holder.imgType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

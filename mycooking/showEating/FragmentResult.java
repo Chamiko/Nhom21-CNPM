@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
-import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.R;
+import com.example.banhnhandau.mycooking.eating.Eating;
 
 /**
  * Created by HoangAnh on 11/11/2017.
@@ -50,9 +50,9 @@ public class FragmentResult extends BaseFragment {
             txtTips.setText("TIPS: " + "\n" +obj.getTips());
         }
 
-        imgRes = (ImageView) myView.findViewById(R.id.imgRes);
-        byte[] img = obj.getImg();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-        imgRes.setImageBitmap(bitmap);
+//        imgRes = (ImageView) myView.findViewById(R.id.imgRes);
+//        byte[] img = obj.getImg();
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+//        imgRes.setImageBitmap(bitmap);
     }
 }
