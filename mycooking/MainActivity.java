@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             transaction.addToBackStack("eating");
             transaction.commit();
         }
-    }
+        }
 
     public void loadFragment(String name, Eating obj) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

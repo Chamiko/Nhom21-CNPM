@@ -12,15 +12,13 @@ import android.widget.TextView;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.R;
-import com.example.banhnhandau.mycooking.type.Type;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +37,8 @@ public class FragmentEating extends BaseFragment  {
     String nameType;
     TextView txtToolType;
     ImageView back1;
-    AsyncHttpClient client = new AsyncHttpClient();
-    Gson gson = new Gson();
+
+
 
     public static FragmentEating newInstance(int idType, String nameType) {
         Bundle args = new Bundle();
@@ -100,7 +98,7 @@ public class FragmentEating extends BaseFragment  {
                 super.onSuccess(statusCode, headers, response);
                 if (progressDialog.isShowing())progressDialog.cancel();
                 Log.d("response", response.toString());
-                java.lang.reflect.Type listType = new TypeToken<List<Eating>>(){}.getType();
+                Type listType = new TypeToken<List<Eating>>(){}.getType();
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
                 eatings.addAll(listResponse) ;
                 adapter.notifyDataSetChanged();
@@ -113,11 +111,11 @@ public class FragmentEating extends BaseFragment  {
         });
     }
 
-//    private void getDataEating() {
 //        Cursor data = MainActivity.dataBaseHelper.
 //                GetData("SELECT * FROM eating WHERE idType = " + idType);
 //        while (data.moveToNext()) {
 //            int id = data.getInt(0);
+//    private void getDataEating() {
 //            Log.d("id", id + " ");
 //            String name = data.getString(1);
 //            String material = data.getString(2);
@@ -169,5 +167,10 @@ public class FragmentEating extends BaseFragment  {
     public void updateData(){
         eatings.clear();
 //        getDataEating();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.R;
 import com.example.banhnhandau.mycooking.eating.Eating;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by HoangAnh on 11/11/2017.
@@ -46,9 +47,11 @@ public class FragmentResult extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         txtTips = (TextView) myView.findViewById(R.id.txtTips);
+        imgRes = (ImageView) myView.findViewById(R.id.imgRes);
         if(obj.getTips() != null) {
             txtTips.setText("TIPS: " + "\n" +obj.getTips());
         }
+        Picasso.with(getActivity()).load(obj.getImage()).into(imgRes);
 
 //        imgRes = (ImageView) myView.findViewById(R.id.imgRes);
 //        byte[] img = obj.getImg();

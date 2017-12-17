@@ -1,8 +1,6 @@
 package com.example.banhnhandau.mycooking.eating;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,8 @@ import java.util.List;
 
 public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder> {
     private Context context;
-    private List<Eating> eatings;
+    private List<Eating> eatings = new ArrayList<>();
+
 //    onBookmarkListener listener;
 
     public AdapterEating(Context context, List<Eating> eatings) {
@@ -35,8 +34,7 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View myView = LayoutInflater.from(context).inflate(R.layout.row_eating, parent, false);
-        ViewHolder viewHolder = new ViewHolder(myView);
-        return viewHolder;
+        return new ViewHolder(myView);
     }
 
     @Override
@@ -77,17 +75,18 @@ public class AdapterEating extends RecyclerView.Adapter<AdapterEating.ViewHolder
         return eatings.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNameEating;
         ImageView imgBookmark, imgEating;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             txtNameEating = (TextView) itemView.findViewById(R.id.txtNameEating);
             imgEating = (ImageView) itemView.findViewById(R.id.imgEating);
 //            imgBookmark = (ImageView) itemView.findViewById(R.id.imgBookmark);
         }
     }
+
 
 //    public interface onBookmarkListener{
 //        void onBookmarkListener(int position);

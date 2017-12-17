@@ -41,8 +41,7 @@ public class FragmentType extends BaseFragment {
     StaggeredGridLayoutManager layoutManager;
     TextView txtTool;
     ImageView menu;
-    AsyncHttpClient client = new AsyncHttpClient();
-    Gson gson = new Gson();
+
 
     public static FragmentType newInstance() {
         Bundle args = new Bundle();
@@ -119,5 +118,10 @@ public class FragmentType extends BaseFragment {
         rcvType.setAdapter(adapter);
 //        getDataType();
         getDataJsonArrayType();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

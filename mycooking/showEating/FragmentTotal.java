@@ -6,15 +6,28 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
+import com.example.banhnhandau.mycooking.eating.AdapterEating;
 import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by BanhNhanDau on 11/13/2017.
@@ -28,6 +41,10 @@ public class FragmentTotal extends BaseFragment {
     Eating obj;
     TextView txtToolEating;
     ImageView back2, bookmarkTool;
+
+    ArrayList<Eating> eatings = new ArrayList<>();
+
+
 
     public Eating getObj() {
         return obj;
@@ -50,6 +67,9 @@ public class FragmentTotal extends BaseFragment {
     public int getViewLayot() {
         return R.layout.fragment_total;
     }
+
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -79,19 +99,30 @@ public class FragmentTotal extends BaseFragment {
         viewPager = (ViewPager) myView.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) myView.findViewById(R.id.tabLayout);
 
-        FragmentMaterial tabMaterial = FragmentMaterial.newInstance(obj);
-        FragmentMaking tabMaking = FragmentMaking.newInstance(obj);
-        FragmentResult tabResult = FragmentResult.newInstance(obj);
-        fragments.add(tabMaterial);
-        fragments.add(tabMaking);
-        fragments.add(tabResult);
+//        getDataJsonArrayEating();
 
-        adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setTabsFromPagerAdapter(adapter);
+
+
+
+//        FragmentMaterial tabMaterial = FragmentMaterial.newInstance(eatings.get(0));
+//        FragmentMaking tabMaking = FragmentMaking.newInstance(eatings.get(0));
+//        FragmentResult tabResult = FragmentResult.newInstance(eatings.get(0));
+//        FragmentMaterial tabMaterial = FragmentMaterial.newInstance(obj);
+//        FragmentMaking tabMaking = FragmentMaking.newInstance(obj);
+//        FragmentResult tabResult = FragmentResult.newInstance(obj);
+//        fragments.add(tabMaterial);
+//        fragments.add(tabMaking);
+//        fragments.add(tabResult);
+//
+//        adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
+//        viewPager.setAdapter(adapter);
+//        tabLayout.setupWithViewPager(viewPager);
+//
+//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.setTabsFromPagerAdapter(adapter);
+//
+        getDataJsonArrayEating();
 
 //        bookmarkTool.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -112,7 +143,43 @@ public class FragmentTotal extends BaseFragment {
 //        });
     }
 
+    private void getDataJsonArrayEating(){
+            progressDialog.show();
+        RequestParams params = new RequestParams();
 
+        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/"+obj.getId(),params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                if (progressDialog.isShowing())progressDialog.cancel();
+                Log.d("response", response.toString());
+                java.lang.reflect.Type listType = new TypeToken<List<Eating>>(){}.getType();
+                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
+                eatings.addAll(listResponse) ;
+                FragmentMaterial tabMaterial = FragmentMaterial.newInstance(eatings.get(0));
+                FragmentMaking tabMaking = FragmentMaking.newInstance(eatings.get(0));
+                FragmentResult tabResult = FragmentResult.newInstance(eatings.get(0));
+                fragments.add(tabMaterial);
+                fragments.add(tabMaking);
+                fragments.add(tabResult);
+
+                adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
+                viewPager.setAdapter(adapter);
+                tabLayout.setupWithViewPager(viewPager);
+
+                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.setTabsFromPagerAdapter(adapter);
+
+             //   adapterEating.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+
+    }
 //    public void updateBookmark() {
 //        FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");
 //        if (fragmentBookmark != null) {
@@ -124,4 +191,9 @@ public class FragmentTotal extends BaseFragment {
 //            fragmentEating.updateData();
 //        }
 //    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
