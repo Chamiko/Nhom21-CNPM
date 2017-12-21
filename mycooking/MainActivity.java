@@ -1,6 +1,7 @@
 package com.example.banhnhandau.mycooking;
 
 import android.app.Dialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,9 +27,11 @@ import com.example.banhnhandau.mycooking.video.FragmentPlayVideo;
 import com.example.banhnhandau.mycooking.video.FragmentVideo;
 import com.example.banhnhandau.mycooking.video.Video;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
-//    public static DataBaseHelper dataBaseHelper;
-//    public static SQLiteDatabase database;
+    public static DataBaseHelper dataBaseHelper;
+    public static SQLiteDatabase database;
     public static DrawerLayout drawLayout;
     Typeface custom_font;
     TextView txtMBookmark, txtMHome, txtMSearch, txtMUs, txtMQuit, txtMVideo;
@@ -41,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mappedOfNavigation();
         custom_font = Typeface.createFromAsset(getAssets(), "UVF DK Crayon Crumble.ttf");
-//
-//        try {
-//            dataBaseHelper = new DataBaseHelper(getApplicationContext());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        database = dataBaseHelper.getWritableDatabase();
+
+        try {
+            dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        database = dataBaseHelper.getWritableDatabase();
 
         drawLayout = (DrawerLayout) findViewById(R.id.drawLayout);
 

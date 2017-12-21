@@ -1,5 +1,6 @@
 package com.example.banhnhandau.mycooking;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -22,10 +23,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private Context mycontext;
     private String DB_PATH;
     private static String DB_NAME = "Cooking.sqlite";
-    public SQLiteDatabase myDataBase;
+    private SQLiteDatabase myDataBase;
 
 
-    public DataBaseHelper(Context context) throws IOException {
+    @SuppressLint("SdCardPath")
+    DataBaseHelper(Context context) throws IOException {
         super(context,DB_NAME,null,1);
         this.mycontext=context;
 
@@ -40,12 +42,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (dbexist) {
             opendatabase();
         } else {
-            System.out.println("DataBaseHelper doesn't exist");
+
             createdatabase();
         }
     }
 
-    public void createdatabase() throws IOException {
+    private void createdatabase() throws IOException {
         boolean dbexist = checkdatabase();
         if(!dbexist) {
             this.getReadableDatabase();
@@ -70,7 +72,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return checkdb;
     }
 
-    public void copydatabase() throws IOException {
+    private void copydatabase() throws IOException {
         //Open your local db as the input stream
         InputStream myinput = mycontext.getAssets().open(DB_NAME);
 
@@ -93,7 +95,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         myinput.close();
     }
 
-    public void opendatabase() throws SQLException {
+    private void opendatabase() throws SQLException {
         //Open the database
         String mypath = DB_PATH + DB_NAME;
         myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);

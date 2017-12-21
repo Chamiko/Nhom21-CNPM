@@ -117,30 +117,6 @@ public class FragmentSearch extends BaseFragment  {
 //        adapter.notifyDataSetChanged();
 //    }
 
-
-//    @Override
-//    public void onBookmarkListener(int position) {
-//        Eating obj = eatings.get(position);
-//        MainActivity.dataBaseHelper.opendatabase();
-//        if (obj.getBookmark() == 0) {
-//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
-//            eatings.get(position).setBookmark(1);
-//            Toast.makeText(getActivity(),"Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-//        } else {
-//            MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
-//            eatings.get(position).setBookmark(0);
-//            Toast.makeText(getActivity(),"Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-//        }
-//        MainActivity.dataBaseHelper.close();
-//
-//        adapter.notifyDataSetChanged();
-//    }
-//
-//    public void updateData(){
-//        eatings.clear();
-//        getDataSearch();
-//    }
-
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(

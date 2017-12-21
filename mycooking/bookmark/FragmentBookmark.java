@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
+import com.example.banhnhandau.mycooking.eating.AdapterEating;
 import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class FragmentBookmark extends BaseFragment {
     private RecyclerView rcvBookmark;
     ArrayList<Eating> eatings = new ArrayList<>();
-    public AdapterBookmark adapter;
+    public AdapterEating adapter;
     LinearLayoutManager layoutManager;
     TextView txtTool;
     ImageView menu;
@@ -62,7 +63,7 @@ public class FragmentBookmark extends BaseFragment {
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rcvBookmark.setLayoutManager(layoutManager);
-        adapter = new AdapterBookmark(getContext(), eatings);
+        adapter = new AdapterEating(getContext(), eatings);
         rcvBookmark.setAdapter(adapter);
 
     }

@@ -68,6 +68,10 @@ public class FragmentType extends BaseFragment {
                 java.lang.reflect.Type listType = new TypeToken<List<Type>>(){}.getType();
                 List<Type> listResponse = gson.fromJson(response.toString(), listType);
                 types.addAll(listResponse) ;
+                for(int i = 0; i < types.size(); i++){
+                    MainActivity.dataBaseHelper.QueryData("INSERT INTO type " +
+                            "VALUES ("+types.get(i).getIdType()+", '"+ types.get(i).getNameType()+"', '"+types.get(i).getImgType()+"')");
+                }
                 adapter.notifyDataSetChanged();
             }
 
@@ -78,22 +82,25 @@ public class FragmentType extends BaseFragment {
         });
     }
 
-//    private void getDataType() {
-//        Cursor data = MainActivity.dataBaseHelper.GetData("SELECT * FROM type");
-//        while (data.moveToNext()) {
-//            int idType = data.getInt(0);
-//            String nameType = data.getString(1);
-//            byte[] imgType = data.getBlob(2);
-//
-//            Type type = new Type();
-//            type.setIdType(idType);
-//            type.setNameType(nameType);
-//            type.setImgType(imgType);
-//
-//            types.add(type);
-//        }
-//        adapter.notifyDataSetChanged();
-//    }
+    private void getDataType() {
+        Cursor data = MainActivity.dataBaseHelper.GetData("SELECT * FROM type");
+        while (data.moveToNext()) {
+            int idType = data.getInt(0);
+            String nameType = data.getString(1);
+            String imgType = data.getString(2);
+
+            Type type = new Type();
+            type.setIdType(idType);
+            type.setNameType(nameType);
+            type.setImgType(imgType);
+
+            types.add(type);
+        }
+        adapter.notifyDataSetChanged();
+        if(types.size() == 0){
+            getDataJsonArrayType();
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -116,8 +123,8 @@ public class FragmentType extends BaseFragment {
         rcvType.setLayoutManager(layoutManager);
         adapter = new AdapterType(getContext(), types);
         rcvType.setAdapter(adapter);
-//        getDataType();
-        getDataJsonArrayType();
+        getDataType();
+//        getDataJsonArrayType();
     }
 
     @Override
