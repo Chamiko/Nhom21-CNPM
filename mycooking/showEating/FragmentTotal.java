@@ -45,7 +45,7 @@ public class FragmentTotal extends BaseFragment {
     ImageView back2, bookmarkTool;
 
     ArrayList<Eating> eatings = new ArrayList<>();
-
+    AdapterEating adapterEating;
 
 
     public Eating getObj() {
@@ -69,8 +69,6 @@ public class FragmentTotal extends BaseFragment {
     public int getViewLayot() {
         return R.layout.fragment_total;
     }
-
-
 
 
     @Override
@@ -101,6 +99,8 @@ public class FragmentTotal extends BaseFragment {
         viewPager = (ViewPager) myView.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) myView.findViewById(R.id.tabLayout);
 
+//        getDataEating();
+
         getDataJsonArrayEating();
 
 //        bookmarkTool.setOnClickListener(new View.OnClickListener() {
@@ -122,35 +122,25 @@ public class FragmentTotal extends BaseFragment {
 //        });
     }
 
-    private void getDataJsonArrayEating(){
-            progressDialog.show();
+    private void getDataJsonArrayEating() {
+        progressDialog.show();
         RequestParams params = new RequestParams();
-
         client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/"+obj.getId(),params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                if (progressDialog.isShowing())progressDialog.cancel();
-                Log.d("response", response.toString());
-                java.lang.reflect.Type listType = new TypeToken<List<Eating>>(){}.getType();
+                if (progressDialog.isShowing()) progressDialog.cancel();
+                java.lang.reflect.Type listType = new TypeToken<List<Eating>>() {}.getType();
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
-                eatings.addAll(listResponse) ;
+                eatings.addAll(listResponse);
+                setupData();
 
-                FragmentMaterial tabMaterial = FragmentMaterial.newInstance(eatings.get(0));
-                FragmentMaking tabMaking = FragmentMaking.newInstance(eatings.get(0));
-                FragmentResult tabResult = FragmentResult.newInstance(eatings.get(0));
-                fragments.add(tabMaterial);
-                fragments.add(tabMaking);
-                fragments.add(tabResult);
+//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET material='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
+//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET making='" + eatings.get(0).getMaking() + "' WHERE id='" + obj.getId() + "'");
+//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET tips='" + eatings.get(0).getTips() + "' WHERE id='" + obj.getId() + "'");
+//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET idType='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
 
-                adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
-                viewPager.setAdapter(adapter);
-                tabLayout.setupWithViewPager(viewPager);
-
-                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                tabLayout.setTabsFromPagerAdapter(adapter);
-
-             //   adapterEating.notifyDataSetChanged();
+//                   adapterEating.notifyDataSetChanged();
             }
 
             @Override
@@ -160,33 +150,51 @@ public class FragmentTotal extends BaseFragment {
         });
     }
 
+    public void setupData() {
+
+        FragmentMaterial tabMaterial = FragmentMaterial.newInstance(eatings.get(0));
+        FragmentMaking tabMaking = FragmentMaking.newInstance(eatings.get(0));
+        FragmentResult tabResult = FragmentResult.newInstance(eatings.get(0));
+        fragments.add(tabMaterial);
+        fragments.add(tabMaking);
+        fragments.add(tabResult);
+
+        adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setTabsFromPagerAdapter(adapter);
+    }
+
 //    private void getDataEating() {
 //        Cursor data = MainActivity.dataBaseHelper.
 //                GetData("SELECT * FROM eating WHERE id = " + obj.getId());
-//        while (data.moveToNext()) {
-//            int id = data.getInt(0);
-//            String name = data.getString(1);
-//            String material = data.getString(2);
-//            String making = data.getString(3);
-//            String img = data.getString(4);
-//            String tips = data.getString(5);
-//            int idType = data.getInt(6);
-//            int bookmark = data.getInt(7);
+//        int id = data.getInt(0);
+//        String name = data.getString(1);
+//        String material = data.getString(2);
+//        String making = data.getString(3);
+//        String img = data.getString(4);
+//        String tips = data.getString(5);
+//        int idType = data.getInt(6);
+//        int bookmark = data.getInt(7);
 //
-//            Eating eating = new Eating();
-//            eating.setId(id);
-//            eating.setName(name);
-//            eating.setMaterial(material);
-//            eating.setMaking(making);
-//            eating.setImage(img);
-//            eating.setTips(tips);
-//            eating.setIdType(idType);
-//            eating.setBookmark(bookmark);
+//        Eating eating = new Eating();
+//        eating.setId(id);
+//        eating.setName(name);
+//        eating.setMaterial(material);
+//        eating.setMaking(making);
+//        eating.setImage(img);
+//        eating.setTips(tips);
+//        eating.setIdType(idType);
+//        eating.setBookmark(bookmark);
 //
-//            eatings.add(eating);
-//        }
-//        adapter.notifyDataSetChanged();
-//        if(eatings.size() == 0){
+//        eatings.add(eating);
+//
+//        setupData();
+//        //lỗi là adapter chưa được khở tạo
+//        adapterEating.notifyDataSetChanged();
+//        if (eatings.get(0).getMaterial() == null) {
 //            getDataJsonArrayEating();
 //        }
 //    }

@@ -41,7 +41,7 @@ public class FragmentType extends BaseFragment {
     StaggeredGridLayoutManager layoutManager;
     TextView txtTool;
     ImageView menu;
-
+    SwipeRefreshLayout swType;
 
     public static FragmentType newInstance() {
         Bundle args = new Bundle();
@@ -64,13 +64,23 @@ public class FragmentType extends BaseFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 if (progressDialog.isShowing())progressDialog.cancel();
-                Log.d("response", response.toString());
+                types.clear();
+                adapter.notifyDataSetChanged();
                 java.lang.reflect.Type listType = new TypeToken<List<Type>>(){}.getType();
                 List<Type> listResponse = gson.fromJson(response.toString(), listType);
                 types.addAll(listResponse) ;
+
                 for(int i = 0; i < types.size(); i++){
-                    MainActivity.dataBaseHelper.QueryData("INSERT INTO type " +
-                            "VALUES ("+types.get(i).getIdType()+", '"+ types.get(i).getNameType()+"', '"+types.get(i).getImgType()+"')");
+                    if(types.get(i).getIdType() == 0 ){
+                        MainActivity.dataBaseHelper.QueryData("INSERT INTO type " +
+                                "VALUES ("+types.get(i).getIdType()+", '"+ types.get(i).getNameType()+"', '"+types.get(i).getImgType()+"')");
+                    } else {
+                        MainActivity.dataBaseHelper.QueryData
+                                ("UPDATE type SET nameType='"+types.get(i).getNameType()+"' WHERE idType='"+types.get(i).getIdType()+"'");
+                        MainActivity.dataBaseHelper.QueryData
+                                ("UPDATE type SET imgType='"+types.get(i).getImgType()+"' WHERE idType='"+types.get(i).getIdType()+"'");
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -78,6 +88,7 @@ public class FragmentType extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+
             }
         });
     }
@@ -93,7 +104,6 @@ public class FragmentType extends BaseFragment {
             type.setIdType(idType);
             type.setNameType(nameType);
             type.setImgType(imgType);
-
             types.add(type);
         }
         adapter.notifyDataSetChanged();
@@ -106,6 +116,7 @@ public class FragmentType extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         txtTool = (TextView) myView.findViewById(R.id.txtTool);
+        swType = (SwipeRefreshLayout) myView.findViewById(R.id.swType);
         Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(), "SVN-Dessert Menu Script.ttf");
         txtTool.setTypeface(custom_font);
 
@@ -124,7 +135,13 @@ public class FragmentType extends BaseFragment {
         adapter = new AdapterType(getContext(), types);
         rcvType.setAdapter(adapter);
         getDataType();
-//        getDataJsonArrayType();
+        swType.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataJsonArrayType();
+                swType.setRefreshing(false);
+            }
+        });
     }
 
     @Override

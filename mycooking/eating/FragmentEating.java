@@ -4,22 +4,19 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +36,8 @@ public class FragmentEating extends BaseFragment  {
     String nameType;
     TextView txtToolType;
     ImageView back1;
+    SwipeRefreshLayout swEating;
+
 
     public static FragmentEating newInstance(int idType, String nameType) {
         Bundle args = new Bundle();
@@ -62,6 +61,8 @@ public class FragmentEating extends BaseFragment  {
         idType = getArguments().getInt("idType");
         nameType = getArguments().getString("nameType");
 
+        swEating = (SwipeRefreshLayout) myView.findViewById(R.id.swEating);
+
         txtToolType = (TextView) myView.findViewById(R.id.txtToolType);
         txtToolType.setText(nameType);
         Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(),"SVN-Dessert Menu Script.ttf");
@@ -84,7 +85,13 @@ public class FragmentEating extends BaseFragment  {
         rcvEating.setAdapter(adapter);
 
         getDataEating();
-//        getDataJsonArrayEating();
+        swEating.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataJsonArrayEating();
+                swEating.setRefreshing(false);
+            }
+        });
 
     }
 
@@ -96,13 +103,23 @@ public class FragmentEating extends BaseFragment  {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 if (progressDialog.isShowing())progressDialog.cancel();
-                Log.d("response", response.toString());
+                eatings.clear();
+                adapter.notifyDataSetChanged();
                 Type listType = new TypeToken<List<Eating>>(){}.getType();
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
                 eatings.addAll(listResponse) ;
+
                 for(int i = 0; i < eatings.size(); i++){
-                    MainActivity.dataBaseHelper.QueryData("INSERT INTO eating " +
+                    if(eatings.get(i).getId() == 0 ){
+                        MainActivity.dataBaseHelper.QueryData("INSERT INTO eating " +
                             "VALUES ("+eatings.get(i).getId()+",'"+eatings.get(i).getName()+"','','','"+eatings.get(i).getImage()+"','',"+idType+",0)");
+                    } else {
+                        MainActivity.dataBaseHelper.QueryData
+                                ("UPDATE eating SET name='"+eatings.get(i).getName()+"' WHERE id='"+eatings.get(i).getId()+"'");
+                        MainActivity.dataBaseHelper.QueryData
+                                ("UPDATE eating SET img='"+eatings.get(i).getImage()+"' WHERE id='"+eatings.get(i).getId()+"'");
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
             }
