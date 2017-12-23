@@ -109,18 +109,18 @@ public class FragmentEating extends BaseFragment  {
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
                 eatings.addAll(listResponse) ;
 
-                for(int i = 0; i < eatings.size(); i++){
-                    if(eatings.get(i).getId() == 0 ){
-                        MainActivity.dataBaseHelper.QueryData("INSERT INTO eating " +
-                            "VALUES ("+eatings.get(i).getId()+",'"+eatings.get(i).getName()+"','','','"+eatings.get(i).getImage()+"','',"+idType+",0)");
-                    } else {
-                        MainActivity.dataBaseHelper.QueryData
-                                ("UPDATE eating SET name='"+eatings.get(i).getName()+"' WHERE id='"+eatings.get(i).getId()+"'");
-                        MainActivity.dataBaseHelper.QueryData
-                                ("UPDATE eating SET img='"+eatings.get(i).getImage()+"' WHERE id='"+eatings.get(i).getId()+"'");
-                    }
-
-                }
+//                for(int i = 0; i < eatings.size(); i++){
+//                    try {
+//                        MainActivity.dataBaseHelper.QueryData("INSERT INTO eating " +
+//                            "VALUES ("+eatings.get(i).getId()+",'"+eatings.get(i).getName()+"','','','"+eatings.get(i).getImage()+"','',"+idType+",0)");
+//                    } catch (Exception e){
+//                        MainActivity.dataBaseHelper.QueryData
+//                                ("UPDATE eating SET name='"+eatings.get(i).getName()+"' WHERE id='"+eatings.get(i).getId()+"'");
+//                        MainActivity.dataBaseHelper.QueryData
+//                                ("UPDATE eating SET img='"+eatings.get(i).getImage()+"' WHERE id='"+eatings.get(i).getId()+"'");
+//                    }
+//
+//                }
                 adapter.notifyDataSetChanged();
             }
 

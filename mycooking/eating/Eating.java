@@ -34,6 +34,23 @@ public class Eating {
     @Expose
     private String image;
 
+    public Eating(int id, String name, String material, String making, String tips, int idType, int bookmark, String image) {
+        this.id = id;
+        this.name = name;
+        this.material = material;
+        this.making = making;
+        this.tips = tips;
+        this.idType = idType;
+        this.bookmark = bookmark;
+        this.image = image;
+    }
+
+    public Eating() {
+        this.material = null;
+        this.making = null;
+        this.tips = null;
+    }
+
     public int getId() {
         return id;
     }

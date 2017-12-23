@@ -71,10 +71,10 @@ public class FragmentType extends BaseFragment {
                 types.addAll(listResponse) ;
 
                 for(int i = 0; i < types.size(); i++){
-                    if(types.get(i).getIdType() == 0 ){
+                    try{
                         MainActivity.dataBaseHelper.QueryData("INSERT INTO type " +
                                 "VALUES ("+types.get(i).getIdType()+", '"+ types.get(i).getNameType()+"', '"+types.get(i).getImgType()+"')");
-                    } else {
+                    } catch (Exception e){
                         MainActivity.dataBaseHelper.QueryData
                                 ("UPDATE type SET nameType='"+types.get(i).getNameType()+"' WHERE idType='"+types.get(i).getIdType()+"'");
                         MainActivity.dataBaseHelper.QueryData

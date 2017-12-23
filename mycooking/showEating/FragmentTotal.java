@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,8 @@ public class FragmentTotal extends BaseFragment {
     Eating obj;
     TextView txtToolEating;
     ImageView back2, bookmarkTool;
+    SwipeRefreshLayout swTotal;
+
 
     ArrayList<Eating> eatings = new ArrayList<>();
     AdapterEating adapterEating;
@@ -75,6 +78,8 @@ public class FragmentTotal extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        swTotal = (SwipeRefreshLayout) myView.findViewById(R.id.swTotal);
+
         txtToolEating = (TextView) myView.findViewById(R.id.txtToolEating);
         txtToolEating.setText(obj.getName());
         Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(), "SVN-Lifehack Sans.ttf");
@@ -99,9 +104,18 @@ public class FragmentTotal extends BaseFragment {
         viewPager = (ViewPager) myView.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) myView.findViewById(R.id.tabLayout);
 
-//        getDataEating();
-
         getDataJsonArrayEating();
+
+
+        swTotal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataJsonArrayEating();
+                swTotal.setRefreshing(false);
+            }
+        });
+
+    }
 
 //        bookmarkTool.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -120,27 +134,54 @@ public class FragmentTotal extends BaseFragment {
 //                updateBookmark();
 //            }
 //        });
-    }
+
 
     private void getDataJsonArrayEating() {
         progressDialog.show();
         RequestParams params = new RequestParams();
-        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/"+obj.getId(),params, new JsonHttpResponseHandler(){
+        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/" + obj.getId(), params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 if (progressDialog.isShowing()) progressDialog.cancel();
-                java.lang.reflect.Type listType = new TypeToken<List<Eating>>() {}.getType();
+                java.lang.reflect.Type listType = new TypeToken<List<Eating>>() {
+                }.getType();
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
                 eatings.addAll(listResponse);
                 setupData();
+                String tmp = "INSERT INTO eating " +
+                        "VALUES ("+eatings.get(0).getId()+",'"+eatings.get(0).getName()+"'," +
+                        "'"+eatings.get(0).getMaterial()+"','"+eatings.get(0).getMaking()+"'," +
+                        "'"+eatings.get(0).getImage()+"','"+eatings.get(0).getTips()+"','"+eatings.get(0).getIdType()+"',0)";
+                MainActivity.dataBaseHelper.QueryData(tmp);
+
+
 
 //                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET material='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
 //                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET making='" + eatings.get(0).getMaking() + "' WHERE id='" + obj.getId() + "'");
 //                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET tips='" + eatings.get(0).getTips() + "' WHERE id='" + obj.getId() + "'");
 //                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET idType='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
 
-//                   adapterEating.notifyDataSetChanged();
+//                Cursor data = MainActivity.dataBaseHelper.
+//                        GetData("SELECT * FROM eating WHERE id = " + eatings.get(0).getId());
+//                int id = data.getInt(0);
+//                String name = data.getString(1);
+//                String material = data.getString(2);
+//                String making = data.getString(3);
+//                String img = data.getString(4);
+//                String tips = data.getString(5);
+//                int idType = data.getInt(6);
+//                int bookmark = data.getInt(7);
+//
+//                Eating eating = new Eating();
+//                eating.setId(id);
+//                eating.setName(name);
+//                eating.setMaterial(material);
+//                eating.setMaking(making);
+//                eating.setImage(img);
+//                eating.setTips(tips);
+//                eating.setIdType(idType);
+//                eating.setBookmark(bookmark);
             }
 
             @Override
@@ -151,7 +192,6 @@ public class FragmentTotal extends BaseFragment {
     }
 
     public void setupData() {
-
         FragmentMaterial tabMaterial = FragmentMaterial.newInstance(eatings.get(0));
         FragmentMaking tabMaking = FragmentMaking.newInstance(eatings.get(0));
         FragmentResult tabResult = FragmentResult.newInstance(eatings.get(0));
