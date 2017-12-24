@@ -106,8 +106,23 @@ public class FragmentTotal extends BaseFragment {
         viewPager = (ViewPager) myView.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) myView.findViewById(R.id.tabLayout);
 
-        getDataJsonArrayEating();
+        if(obj.getMaterial() == null) {
+            getDataJsonArrayEating();
+        }else{
+            FragmentMaterial tabMaterial = FragmentMaterial.newInstance(obj);
+            FragmentMaking tabMaking = FragmentMaking.newInstance(obj);
+            FragmentResult tabResult = FragmentResult.newInstance(obj);
+            fragments.add(tabMaterial);
+            fragments.add(tabMaking);
+            fragments.add(tabResult);
 
+            adapter = new AdapterViewPager(getChildFragmentManager(), fragments);
+            viewPager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(viewPager);
+
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setTabsFromPagerAdapter(adapter);
+        }
 
 //        swTotal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 //            @Override
@@ -117,7 +132,7 @@ public class FragmentTotal extends BaseFragment {
 //            }
 //        });
 
-                bookmarkTool.setOnClickListener(new View.OnClickListener() {
+        bookmarkTool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (obj.getBookmark() == 0) {
@@ -156,8 +171,8 @@ public class FragmentTotal extends BaseFragment {
                             "'" + eatings.get(0).getMaterial() + "','" + eatings.get(0).getMaking() + "'," +
                             "'" + eatings.get(0).getImage() + "','" + eatings.get(0).getTips() + "','" + eatings.get(0).getIdType() + "',0)";
                     MainActivity.dataBaseHelper.QueryData(tmp);
-                }catch (Exception e){
-                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET img = 1  WHERE id='" + eatings.get(0).getId() + "'");
+                } catch (Exception e) {
+
                 }
             }
 

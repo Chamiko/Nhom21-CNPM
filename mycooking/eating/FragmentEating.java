@@ -37,6 +37,7 @@ public class FragmentEating extends BaseFragment  {
     TextView txtToolType;
     ImageView back1;
     SwipeRefreshLayout swEating;
+    int count;
 
 
     public static FragmentEating newInstance(int idType, String nameType) {
