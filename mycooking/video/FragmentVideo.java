@@ -1,5 +1,6 @@
 package com.example.banhnhandau.mycooking.video;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ public class FragmentVideo extends BaseFragment {
     public AdapterVideo adapter;
     LinearLayoutManager layoutManager;
     ImageView menu;
+    TextView txtChanel;
 
     public static final String API_KEY = "AIzaSyDe3M_3jUpKhHvc8EdZ3Uvt0KS-4rSnabE";
     String ID_PLAY_LIST = "PLIqf0aj-QeToj2hsz6cxnuSO4hqtB_GEx";
@@ -65,6 +67,9 @@ public class FragmentVideo extends BaseFragment {
                 MainActivity.drawLayout.openDrawer(Gravity.LEFT);
             }
         });
+        txtChanel = (TextView) myView.findViewById(R.id.txtChanel);
+        Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(), "SVN-Dessert Menu Script.ttf");
+        txtChanel.setTypeface(custom_font);
 
         rcvVideo = (RecyclerView) myView.findViewById(R.id.rcvVideo);
         layoutManager = new LinearLayoutManager(getActivity());
