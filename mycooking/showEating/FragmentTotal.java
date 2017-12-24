@@ -195,11 +195,6 @@ public class FragmentTotal extends BaseFragment {
         if (fragmentBookmark != null) {
             fragmentBookmark.updateMyself();
         }
-
-        FragmentEating fragmentEating = (FragmentEating) getFragmentManager().findFragmentByTag("eating");
-        if (fragmentEating != null) {
-            fragmentEating.updateData();
-        }
     }
 
     @Override

@@ -160,11 +160,6 @@ public class FragmentEating extends BaseFragment {
         }
     }
 
-    public void updateData() {
-        eatings.clear();
-        getDataEating();
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
