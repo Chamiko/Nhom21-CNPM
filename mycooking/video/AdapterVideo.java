@@ -42,8 +42,6 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHolder> 
             @Override
             public void onClick(View v) {
                 ((MainActivity)context).loadFragment("play", video);
-
-
             }
         });
         holder.imgThumbnail.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +50,6 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHolder> 
                 holder.txtTitleVideo.performLongClick();
             }
         });
-
     }
 
     @Override

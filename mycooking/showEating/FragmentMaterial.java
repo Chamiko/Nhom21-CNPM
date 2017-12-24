@@ -29,11 +29,6 @@ import java.util.List;
 public class FragmentMaterial extends BaseFragment {
     Eating obj;
     TextView txtMaterial;
-    AsyncHttpClient client = new AsyncHttpClient();
-    ;
-    Gson gson = new Gson();
-    ArrayList<Eating> eatings = new ArrayList<>();
-    AdapterEating adapterEating;
 
     public Eating getObj() {
         return obj;
@@ -62,31 +57,5 @@ public class FragmentMaterial extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         txtMaterial = (TextView) myView.findViewById(R.id.txtMaterial);
         txtMaterial.setText(obj.getMaterial());
-
-
     }
-
-//        private void getDataJsonArrayEating(){
-//            progressDialog.show();
-//        RequestParams params = new RequestParams();
-//        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/70",params, new JsonHttpResponseHandler(){
-////        client.get( "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/70", new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-//                if (progressDialog.isShowing())progressDialog.cancel();
-//                Log.d("response", response.toString());
-//                java.lang.reflect.Type listType = new TypeToken<List<Eating>>(){}.getType();
-//                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
-//                eatings.addAll(listResponse) ;
-//                adapterEating.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
-//            }
-//        });
-//
-//    }
 }

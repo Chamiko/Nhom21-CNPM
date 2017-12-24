@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by BanhNhanDau on 11/04/2017.
  */
 
+
 public class Type {
 
     @SerializedName("idType")
@@ -18,6 +19,9 @@ public class Type {
     @SerializedName("imgType")
     @Expose
     private String imgType;
+    @SerializedName("count")
+    @Expose
+    private int count;
 
     public int getIdType() {
         return idType;
@@ -42,5 +46,16 @@ public class Type {
     public void setImgType(String imgType) {
         this.imgType = imgType;
     }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
 }
+
+
 

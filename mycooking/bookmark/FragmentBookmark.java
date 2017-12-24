@@ -33,7 +33,6 @@ public class FragmentBookmark extends BaseFragment {
 
     public static FragmentBookmark newInstance() {
         Bundle args = new Bundle();
-
         FragmentBookmark fragment = new FragmentBookmark();
         fragment.setArguments(args);
         return fragment;

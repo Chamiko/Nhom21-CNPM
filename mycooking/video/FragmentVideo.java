@@ -36,13 +36,11 @@ public class FragmentVideo extends BaseFragment {
     ArrayList<Video> videos = new ArrayList<>();
     public AdapterVideo adapter;
     LinearLayoutManager layoutManager;
-    TextView txtTitle;
-    ImageView menu, imgThumnail;
+    ImageView menu;
 
-    //String API_KEY = "AIzaSyC2qV7iBDU40TdIU3-b4j1MpzBFTjKhQv0";
     public static final String API_KEY = "AIzaSyDe3M_3jUpKhHvc8EdZ3Uvt0KS-4rSnabE";
     String ID_PLAY_LIST = "PLIqf0aj-QeToj2hsz6cxnuSO4hqtB_GEx";
-    String urlGetJson = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId="+ID_PLAY_LIST+"&key="+API_KEY+"&maxResults=50";
+    String urlGetJson = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + ID_PLAY_LIST + "&key=" + API_KEY + "&maxResults=50";
 
     public static FragmentVideo newInstance() {
         Bundle args = new Bundle();
@@ -51,8 +49,11 @@ public class FragmentVideo extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
-    public int getViewLayot() {return R.layout.fragment_video;}
+    public int getViewLayot() {
+        return R.layout.fragment_video;
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -71,12 +72,15 @@ public class FragmentVideo extends BaseFragment {
         rcvVideo.setLayoutManager(layoutManager);
         adapter = new AdapterVideo(getContext(), videos);
         rcvVideo.setAdapter(adapter);
-
-        getJsonYouTube(urlGetJson);
+        if (!isInternetAvailable()) {
+            dialogNetwork();
+        } else {
+            getJsonYouTube(urlGetJson);
+        }
 
     }
 
-    private void getJsonYouTube (String url){
+    private void getJsonYouTube(String url) {
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -86,7 +90,7 @@ public class FragmentVideo extends BaseFragment {
                     String title = "";
                     String url = "";
                     String idVideo = "";
-                    for (int i = 0; i < jsonItems.length(); i++){
+                    for (int i = 0; i < jsonItems.length(); i++) {
                         JSONObject jsonItem = jsonItems.getJSONObject(i);
                         JSONObject jsonSnippet = jsonItem.getJSONObject("snippet");
                         title = jsonSnippet.getString("title");
@@ -95,27 +99,19 @@ public class FragmentVideo extends BaseFragment {
                         url = jsonMedium.getString("url");
                         JSONObject jsonResourceID = jsonSnippet.getJSONObject("resourceId");
                         idVideo = jsonResourceID.getString("videoId");
-                        // Toast.makeText(MainActivity.this,idVideo, Toast.LENGTH_LONG).show();
                         videos.add(new Video(idVideo, title, url));
 
                     }
                     adapter.notifyDataSetChanged();
-                    /*for(int j = 0; j < videos.size(); j++) {
-                        Toast.makeText(MainActivity.this, arrayVideo.get(j).getThumbnail().toString() + arrayVideo.get(j).getTitle().toString() + arrayVideo.get(j).getIdVideo().toString(), Toast.LENGTH_LONG).show();
-                    }*/
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"Lỗi!!", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getContext(), "Lỗi!!", Toast.LENGTH_SHORT).show();
                     }
                 }
         );

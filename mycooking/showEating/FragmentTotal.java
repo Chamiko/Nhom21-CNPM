@@ -46,12 +46,7 @@ public class FragmentTotal extends BaseFragment {
     Eating obj;
     TextView txtToolEating;
     ImageView back2, bookmarkTool;
-//    SwipeRefreshLayout swTotal;
-
-
     ArrayList<Eating> eatings = new ArrayList<>();
-    AdapterEating adapterEating;
-
 
     public Eating getObj() {
         return obj;
@@ -75,12 +70,9 @@ public class FragmentTotal extends BaseFragment {
         return R.layout.fragment_total;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        swTotal = (SwipeRefreshLayout) myView.findViewById(R.id.swTotal);
 
         txtToolEating = (TextView) myView.findViewById(R.id.txtToolEating);
         txtToolEating.setText(obj.getName());
@@ -124,14 +116,6 @@ public class FragmentTotal extends BaseFragment {
             tabLayout.setTabsFromPagerAdapter(adapter);
         }
 
-//        swTotal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                getDataJsonArrayEating();
-//                swTotal.setRefreshing(false);
-//            }
-//        });
-
         bookmarkTool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,34 +137,41 @@ public class FragmentTotal extends BaseFragment {
     }
 
     private void getDataJsonArrayEating() {
-        progressDialog.show();
-        RequestParams params = new RequestParams();
-        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/" + obj.getId(), params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                if (progressDialog.isShowing()) progressDialog.cancel();
-                java.lang.reflect.Type listType = new TypeToken<List<Eating>>() {
-                }.getType();
-                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
-                eatings.addAll(listResponse);
-                setupData();
-                try {
-                    String tmp = "INSERT INTO eating " +
-                            "VALUES (" + eatings.get(0).getId() + ",'" + eatings.get(0).getName() + "'," +
-                            "'" + eatings.get(0).getMaterial() + "','" + eatings.get(0).getMaking() + "'," +
-                            "'" + eatings.get(0).getImage() + "','" + eatings.get(0).getTips() + "','" + eatings.get(0).getIdType() + "',0)";
-                    MainActivity.dataBaseHelper.QueryData(tmp);
-                } catch (Exception e) {
+        if (!isInternetAvailable()) {
+            dialogNetwork();
+        } else {
+            progressDialog.show();
+            RequestParams params = new RequestParams();
+            client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/id/" + obj.getId(), params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    super.onSuccess(statusCode, headers, response);
+                    if (progressDialog.isShowing()) progressDialog.cancel();
+                    java.lang.reflect.Type listType = new TypeToken<List<Eating>>() {
+                    }.getType();
+                    List<Eating> listResponse = gson.fromJson(response.toString(), listType);
+                    eatings.addAll(listResponse);
+                    setupData();
+                    try {
+                        String tmp = "INSERT INTO eating " +
+                                "VALUES (" + eatings.get(0).getId() + ",'" + eatings.get(0).getName() + "'," +
+                                "'" + eatings.get(0).getMaterial() + "','" + eatings.get(0).getMaking() + "'," +
+                                "'" + eatings.get(0).getImage() + "','" + eatings.get(0).getTips() + "','" + eatings.get(0).getIdType() + "',0)";
+                        MainActivity.dataBaseHelper.QueryData(tmp);
+                    } catch (Exception e) {
 
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    progressDialog.cancel();
+                    dialogNetwork();
+                }
+            });
+            client.setTimeout(10000);
+        }
     }
 
     public void setupData() {
@@ -198,38 +189,6 @@ public class FragmentTotal extends BaseFragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
     }
-
-//    private void getDataEating() {
-//        Cursor data = MainActivity.dataBaseHelper.
-//                GetData("SELECT * FROM eating WHERE id = " + obj.getId());
-//        int id = data.getInt(0);
-//        String name = data.getString(1);
-//        String material = data.getString(2);
-//        String making = data.getString(3);
-//        String img = data.getString(4);
-//        String tips = data.getString(5);
-//        int idType = data.getInt(6);
-//        int bookmark = data.getInt(7);
-//
-//        Eating eating = new Eating();
-//        eating.setId(id);
-//        eating.setName(name);
-//        eating.setMaterial(material);
-//        eating.setMaking(making);
-//        eating.setImage(img);
-//        eating.setTips(tips);
-//        eating.setIdType(idType);
-//        eating.setBookmark(bookmark);
-//
-//        eatings.add(eating);
-//
-//        setupData();
-//        //lỗi là adapter chưa được khở tạo
-//        adapterEating.notifyDataSetChanged();
-//        if (eatings.get(0).getMaterial() == null) {
-//            getDataJsonArrayEating();
-//        }
-//    }
 
     public void updateBookmark() {
         FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");

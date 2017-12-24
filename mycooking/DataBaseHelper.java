@@ -25,7 +25,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "Cooking.sqlite";
     private SQLiteDatabase myDataBase;
 
-
     @SuppressLint("SdCardPath")
     DataBaseHelper(Context context) throws IOException {
         super(context,DB_NAME,null,1);

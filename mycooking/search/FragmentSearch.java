@@ -47,7 +47,6 @@ public class FragmentSearch extends BaseFragment {
 
     public static FragmentSearch newInstance() {
         Bundle args = new Bundle();
-
         FragmentSearch fragment = new FragmentSearch();
         fragment.setArguments(args);
         return fragment;
@@ -89,39 +88,45 @@ public class FragmentSearch extends BaseFragment {
     }
 
     private void getDataSearchJsonArray() {
-        key = edtSearch.getText().toString();
-        if (key.length() == 0) {
-            Toast.makeText(getContext(), "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (!isInternetAvailable()) {
+            dialogNetwork();
+        } else {
+            key = edtSearch.getText().toString();
+            if (key.length() == 0) {
+                Toast.makeText(getContext(), "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        progressDialog.show();
-        RequestParams params = new RequestParams();
-        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/like/" + key, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                if (progressDialog.isShowing()) progressDialog.cancel();
-                eatings.clear();
-                adapter.notifyDataSetChanged();
-                Type listType = new TypeToken<List<Eating>>() {
-                }.getType();
-                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
-                eatings.addAll(listResponse);
+            progressDialog.show();
+            RequestParams params = new RequestParams();
+            client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/like/" + key, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    super.onSuccess(statusCode, headers, response);
+                    if (progressDialog.isShowing()) progressDialog.cancel();
+                    eatings.clear();
+                    adapter.notifyDataSetChanged();
+                    Type listType = new TypeToken<List<Eating>>() {
+                    }.getType();
+                    List<Eating> listResponse = gson.fromJson(response.toString(), listType);
+                    eatings.addAll(listResponse);
 
-                if (eatings.size() == 0) {
-                    Toast.makeText(getContext(), "Không có kết quả tìm kiếm cho '" + key + "'", Toast.LENGTH_SHORT).show();
-                    return;
+                    if (eatings.size() == 0) {
+                        Toast.makeText(getContext(), "Không có kết quả tìm kiếm cho '" + key + "'", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    adapter.notifyDataSetChanged();
                 }
 
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    progressDialog.cancel();
+                    dialogNetwork();
+                }
+            });
+            client.setTimeout(10000);
+        }
     }
 
     public static void hideSoftKeyboard(Activity activity) {

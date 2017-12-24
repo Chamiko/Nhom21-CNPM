@@ -48,7 +48,7 @@ public class FragmentResult extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         txtTips = (TextView) myView.findViewById(R.id.txtTips);
         imgRes = (ImageView) myView.findViewById(R.id.imgRes);
-        if(obj.getTips().compareTo("null") != 0 ) {
+        if(obj.getTips() != null && obj.getTips().compareTo("null") != 0 ) {
             txtTips.setText("TIPS: " + "\n" +obj.getTips());
         }
         Picasso.with(getActivity()).load(obj.getImage()).into(imgRes);

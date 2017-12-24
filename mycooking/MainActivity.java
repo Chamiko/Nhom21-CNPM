@@ -103,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void loadFragment(String name, int idType, String nameType) {
+    public void loadFragment(String name, int idType, String nameType, int count) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         Fragment fragment;
         if (name.equals("eating")) {
-            fragment = FragmentEating.newInstance(idType, nameType);
+            fragment = FragmentEating.newInstance(idType, nameType, count);
             transaction.add(R.id.container, fragment, "eating");
             int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
             FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);

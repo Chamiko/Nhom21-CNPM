@@ -19,7 +19,7 @@ import java.util.List;
  * Created by BanhNhanDau on 11/04/2017.
  */
 
-public class AdapterType  extends RecyclerView.Adapter<AdapterType.ViewHolder> {
+public class AdapterType extends RecyclerView.Adapter<AdapterType.ViewHolder> {
     private Context context;
     private List<Type> types;
 
@@ -47,7 +47,7 @@ public class AdapterType  extends RecyclerView.Adapter<AdapterType.ViewHolder> {
         holder.imgType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).loadFragment("eating",type.getIdType() ,type.getNameType());
+                ((MainActivity) context).loadFragment("eating", type.getIdType(), type.getNameType(), type.getCount());
 
             }
         });
@@ -68,6 +68,7 @@ public class AdapterType  extends RecyclerView.Adapter<AdapterType.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNameType;
         ImageView imgType;
+
         public ViewHolder(View itemView) {
             super(itemView);
             txtNameType = (TextView) itemView.findViewById(R.id.txtNameType);

@@ -10,13 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
 import org.json.JSONArray;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,24 +30,23 @@ import cz.msebera.android.httpclient.Header;
  * Created by BanhNhanDau on 11/08/2017.
  */
 
-public class FragmentEating extends BaseFragment  {
+public class FragmentEating extends BaseFragment {
     private RecyclerView rcvEating;
     ArrayList<Eating> eatings = new ArrayList<>();
     public AdapterEating adapter;
     LinearLayoutManager layoutManager;
-    int idType;
+    int idType, count;
     String nameType;
     TextView txtToolType;
     ImageView back1;
     SwipeRefreshLayout swEating;
-    int count;
 
-
-    public static FragmentEating newInstance(int idType, String nameType) {
+    public static FragmentEating newInstance(int idType, String nameType, int count) {
         Bundle args = new Bundle();
 
         args.putInt("idType", idType);
         args.putString("nameType", nameType);
+        args.putInt("count", count);
 
         FragmentEating fragment = new FragmentEating();
         fragment.setArguments(args);
@@ -61,12 +63,13 @@ public class FragmentEating extends BaseFragment  {
         super.onActivityCreated(savedInstanceState);
         idType = getArguments().getInt("idType");
         nameType = getArguments().getString("nameType");
+        count = getArguments().getInt("count");
 
         swEating = (SwipeRefreshLayout) myView.findViewById(R.id.swEating);
 
         txtToolType = (TextView) myView.findViewById(R.id.txtToolType);
         txtToolType.setText(nameType);
-        Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(),"SVN-Dessert Menu Script.ttf");
+        Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(), "SVN-Dessert Menu Script.ttf");
         txtToolType.setTypeface(custom_font);
 
         back1 = (ImageView) myView.findViewById(R.id.back1);
@@ -82,7 +85,7 @@ public class FragmentEating extends BaseFragment  {
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rcvEating.setLayoutManager(layoutManager);
-        adapter = new AdapterEating(getContext(),eatings);
+        adapter = new AdapterEating(getContext(), eatings);
         rcvEating.setAdapter(adapter);
 
         getDataEating();
@@ -93,43 +96,33 @@ public class FragmentEating extends BaseFragment  {
                 swEating.setRefreshing(false);
             }
         });
-
     }
 
-    private void getDataJsonArrayEating(){
-        progressDialog.show();
-        RequestParams params = new RequestParams();
-        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/idType/"+idType,params, new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                if (progressDialog.isShowing())progressDialog.cancel();
-                eatings.clear();
-                adapter.notifyDataSetChanged();
-                Type listType = new TypeToken<List<Eating>>(){}.getType();
-                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
-                eatings.addAll(listResponse) ;
+    private void getDataJsonArrayEating() {
+            progressDialog.show();
+            RequestParams params = new RequestParams();
+            client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/idType/" + idType, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    super.onSuccess(statusCode, headers, response);
+                    if (progressDialog.isShowing()) progressDialog.cancel();
+                    eatings.clear();
+                    adapter.notifyDataSetChanged();
+                    Type listType = new TypeToken<List<Eating>>() {
+                    }.getType();
+                    List<Eating> listResponse = gson.fromJson(response.toString(), listType);
+                    eatings.addAll(listResponse);
+                    adapter.notifyDataSetChanged();
+                }
 
-//                for(int i = 0; i < eatings.size(); i++){
-//                    try {
-//                        MainActivity.dataBaseHelper.QueryData("INSERT INTO eating " +
-//                            "VALUES ("+eatings.get(i).getId()+",'"+eatings.get(i).getName()+"','','','"+eatings.get(i).getImage()+"','',"+idType+",0)");
-//                    } catch (Exception e){
-//                        MainActivity.dataBaseHelper.QueryData
-//                                ("UPDATE eating SET name='"+eatings.get(i).getName()+"' WHERE id='"+eatings.get(i).getId()+"'");
-//                        MainActivity.dataBaseHelper.QueryData
-//                                ("UPDATE eating SET img='"+eatings.get(i).getImage()+"' WHERE id='"+eatings.get(i).getId()+"'");
-//                    }
-//
-//                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    progressDialog.cancel();
+                    dialogNetwork();
+                }
+            });
+        client.setTimeout(10000);
     }
 
     private void getDataEating() {
@@ -158,12 +151,16 @@ public class FragmentEating extends BaseFragment  {
             eatings.add(eating);
         }
         adapter.notifyDataSetChanged();
-        if(eatings.size() == 0){
-            getDataJsonArrayEating();
+        if ((eatings.size() < count)) {
+            if (!isInternetAvailable()) {
+                dialogNetwork();
+            } else {
+                getDataJsonArrayEating();
+            }
         }
     }
 
-    public void updateData(){
+    public void updateData() {
         eatings.clear();
         getDataEating();
     }

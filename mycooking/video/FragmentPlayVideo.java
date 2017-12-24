@@ -34,8 +34,6 @@ public class FragmentPlayVideo extends Fragment {
 
     public static FragmentPlayVideo newInstance(Video obj) {
         Bundle args = new Bundle();
-
-
         FragmentPlayVideo fragment = new FragmentPlayVideo();
         fragment.setObj(obj);
         fragment.setArguments(args);
@@ -81,5 +79,4 @@ public class FragmentPlayVideo extends Fragment {
         }else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         }
     }
-
 }
