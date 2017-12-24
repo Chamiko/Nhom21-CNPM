@@ -16,8 +16,6 @@
         android:background="@drawable/icon_arrow2" />
 
     <TextView
-        android:ellipsize="end"
-        android:maxLines="1"
         android:id="@+id/txtToolEating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +23,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="45dp"
         android:layout_toRightOf="@id/back2"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Eating"
         android:textSize="30dp" />
 

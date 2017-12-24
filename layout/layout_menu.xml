@@ -22,14 +22,14 @@
     <RelativeLayout
         android:id="@+id/lo1"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconHome"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -44,7 +44,7 @@
             android:layout_toRightOf="@+id/iconHome"
             android:text="Home"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
         <ImageView
@@ -57,14 +57,14 @@
     <RelativeLayout
         android:id="@+id/lo2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconBookmark"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/green_heart_icon" />
 
@@ -77,7 +77,7 @@
             android:layout_toRightOf="@+id/iconBookmark"
             android:text="Bookmark"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
         <ImageView
@@ -91,14 +91,14 @@
     <RelativeLayout
         android:id="@+id/lo3"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconSearch"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/green_search_icon" />
 
@@ -111,7 +111,7 @@
             android:layout_toRightOf="@+id/iconSearch"
             android:text="Search"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
         <ImageView
@@ -124,14 +124,14 @@
     <RelativeLayout
         android:id="@+id/lo6"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconVideo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/green_video_icon" />
 
@@ -144,7 +144,7 @@
             android:layout_toRightOf="@+id/iconVideo"
             android:text="'Bếp' Chanel"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
         <ImageView
@@ -157,14 +157,14 @@
     <RelativeLayout
         android:id="@+id/lo4"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconUs"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/green_user_icon" />
 
@@ -177,7 +177,7 @@
             android:layout_toRightOf="@+id/iconUs"
             android:text="About Us"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
         <ImageView
@@ -190,14 +190,14 @@
     <RelativeLayout
         android:id="@+id/lo5"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/iconQuit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/green_qiut_icon" />
 
@@ -210,7 +210,7 @@
             android:layout_toRightOf="@+id/iconQuit"
             android:text="Quit"
             android:textColor="#448013"
-            android:textSize="28dp"
+            android:textSize="24dp"
             android:textStyle="italic" />
 
     </RelativeLayout>

@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Capricorn020197@gmail.com"
+                android:text="myteamhus1997@gmail.com"
                 android:textColor="#1c45a6"
                 android:textSize="12dp"
                 android:textStyle="italic" />
@@ -71,14 +71,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Facebook: "
+                android:text="Group: "
                 android:textColor="#000"
                 android:textSize="12dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="facebook.com/HTMHg"
+                android:text="21-CNPM"
                 android:textColor="#1c45a6"
                 android:textSize="12dp"
                 android:textStyle="italic" />
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="©2017, HuongHtm"
+            android:text="©2017, K60A2_CIS_HUS-VNU"
             android:textColor="#000"
             android:textSize="12dp" />
 
