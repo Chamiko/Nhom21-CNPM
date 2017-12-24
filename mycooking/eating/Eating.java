@@ -46,9 +46,9 @@ public class Eating {
     }
 
     public Eating() {
-        this.material = null;
-        this.making = null;
-        this.tips = null;
+//        this.material = null;
+//        this.making = null;
+//        this.tips = null;
     }
 
     public int getId() {

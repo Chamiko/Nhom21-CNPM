@@ -1,6 +1,7 @@
 package com.example.banhnhandau.mycooking.search;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,20 +13,30 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.eating.AdapterEating;
 import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.MainActivity;
 import com.example.banhnhandau.mycooking.R;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by BaoND on 11/28/2017.
  */
 
-public class FragmentSearch extends BaseFragment  {
+public class FragmentSearch extends BaseFragment {
     private RecyclerView rcvSearch;
     ArrayList<Eating> eatings = new ArrayList<>();
     public AdapterEating adapter;
@@ -36,12 +47,12 @@ public class FragmentSearch extends BaseFragment  {
 
     public static FragmentSearch newInstance() {
         Bundle args = new Bundle();
-        
+
         FragmentSearch fragment = new FragmentSearch();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     public int getViewLayot() {
         return R.layout.fragment_search;
@@ -69,53 +80,49 @@ public class FragmentSearch extends BaseFragment  {
         rcvSearch.setLayoutManager(layoutManager);
         adapter = new AdapterEating(getContext(), eatings);
         rcvSearch.setAdapter(adapter);
-//        btnSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getDataSearch();
-//            }
-//        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDataSearchJsonArray();
+            }
+        });
     }
 
-//    private void getDataSearch() {
-//        key = edtSearch.getText().toString();
-//        if(key.length() == 0){
-//            Toast.makeText(getContext(), "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        Cursor data = MainActivity.dataBaseHelper.
-//                GetData("SELECT * FROM eating WHERE  name LIKE '%"+ key +"%'");
-//        if(data.getCount() == 0){
-//            Toast.makeText(getContext(), "Không có kết quả tìm kiếm cho '"+key+"'", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        eatings.clear();
-//        adapter.notifyDataSetChanged();
-//        while (data.moveToNext()) {
-//            int id = data.getInt(0);
-//            Log.d("id", id + " ");
-//            String name = data.getString(1);
-//            String material = data.getString(2);
-//            String making = data.getString(3);
-//            byte[] img = data.getBlob(4);
-//            String tips = data.getString(5);
-//            int idType = data.getInt(6);
-//            int bookmark = data.getInt(7);
-//
-//            Eating eating = new Eating();
-//            eating.setId(id);
-//            eating.setName(name);
-//            eating.setMaterial(material);
-//            eating.setMaking(making);
-//            eating.setImg(img);
-//            eating.setTips(tips);
-//            eating.setIdType(idType);
-//            eating.setBookmark(bookmark);
-//
-//            eatings.add(eating);
-//        }
-//        adapter.notifyDataSetChanged();
-//    }
+    private void getDataSearchJsonArray() {
+        key = edtSearch.getText().toString();
+        if (key.length() == 0) {
+            Toast.makeText(getContext(), "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressDialog.show();
+        RequestParams params = new RequestParams();
+        client.get(getContext(), "https://myteamhus1997.000webhostapp.com/CNPM/getEating/like/" + key, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                if (progressDialog.isShowing()) progressDialog.cancel();
+                eatings.clear();
+                adapter.notifyDataSetChanged();
+                Type listType = new TypeToken<List<Eating>>() {
+                }.getType();
+                List<Eating> listResponse = gson.fromJson(response.toString(), listType);
+                eatings.addAll(listResponse);
+
+                if (eatings.size() == 0) {
+                    Toast.makeText(getContext(), "Không có kết quả tìm kiếm cho '" + key + "'", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
 
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =

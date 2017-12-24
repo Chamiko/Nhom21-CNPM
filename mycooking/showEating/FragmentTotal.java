@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.example.banhnhandau.mycooking.BaseFragment;
 import com.example.banhnhandau.mycooking.MainActivity;
+import com.example.banhnhandau.mycooking.bookmark.FragmentBookmark;
 import com.example.banhnhandau.mycooking.eating.AdapterEating;
 import com.example.banhnhandau.mycooking.eating.Eating;
 import com.example.banhnhandau.mycooking.R;
+import com.example.banhnhandau.mycooking.eating.FragmentEating;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
@@ -44,7 +46,7 @@ public class FragmentTotal extends BaseFragment {
     Eating obj;
     TextView txtToolEating;
     ImageView back2, bookmarkTool;
-    SwipeRefreshLayout swTotal;
+//    SwipeRefreshLayout swTotal;
 
 
     ArrayList<Eating> eatings = new ArrayList<>();
@@ -78,7 +80,7 @@ public class FragmentTotal extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        swTotal = (SwipeRefreshLayout) myView.findViewById(R.id.swTotal);
+//        swTotal = (SwipeRefreshLayout) myView.findViewById(R.id.swTotal);
 
         txtToolEating = (TextView) myView.findViewById(R.id.txtToolEating);
         txtToolEating.setText(obj.getName());
@@ -107,34 +109,33 @@ public class FragmentTotal extends BaseFragment {
         getDataJsonArrayEating();
 
 
-        swTotal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        swTotal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                getDataJsonArrayEating();
+//                swTotal.setRefreshing(false);
+//            }
+//        });
+
+                bookmarkTool.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                getDataJsonArrayEating();
-                swTotal.setRefreshing(false);
+            public void onClick(View view) {
+                if (obj.getBookmark() == 0) {
+                    obj.setBookmark(1);
+                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_full);
+                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
+                    Toast.makeText(getActivity(), "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                } else {
+                    obj.setBookmark(0);
+                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_empty);
+                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
+                    Toast.makeText(getActivity(), "Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                }
+                updateBookmark();
             }
         });
 
     }
-
-//        bookmarkTool.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (obj.getBookmark() == 0) {
-//                    obj.setBookmark(1);
-//                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_full);
-//                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 1  WHERE id='" + obj.getId() + "'");
-//                    Toast.makeText(getActivity(), "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    obj.setBookmark(0);
-//                    bookmarkTool.setImageResource(R.drawable.red_heart_icon_empty);
-//                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET bookmark = 0  WHERE id='" + obj.getId() + "'");
-//                    Toast.makeText(getActivity(), "Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-//                }
-//                updateBookmark();
-//            }
-//        });
-
 
     private void getDataJsonArrayEating() {
         progressDialog.show();
@@ -149,39 +150,15 @@ public class FragmentTotal extends BaseFragment {
                 List<Eating> listResponse = gson.fromJson(response.toString(), listType);
                 eatings.addAll(listResponse);
                 setupData();
-                String tmp = "INSERT INTO eating " +
-                        "VALUES ("+eatings.get(0).getId()+",'"+eatings.get(0).getName()+"'," +
-                        "'"+eatings.get(0).getMaterial()+"','"+eatings.get(0).getMaking()+"'," +
-                        "'"+eatings.get(0).getImage()+"','"+eatings.get(0).getTips()+"','"+eatings.get(0).getIdType()+"',0)";
-                MainActivity.dataBaseHelper.QueryData(tmp);
-
-
-
-//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET material='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
-//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET making='" + eatings.get(0).getMaking() + "' WHERE id='" + obj.getId() + "'");
-//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET tips='" + eatings.get(0).getTips() + "' WHERE id='" + obj.getId() + "'");
-//                MainActivity.dataBaseHelper.QueryData("UPDATE eating SET idType='" + eatings.get(0).getMaterial() + "' WHERE id='" + obj.getId() + "'");
-
-//                Cursor data = MainActivity.dataBaseHelper.
-//                        GetData("SELECT * FROM eating WHERE id = " + eatings.get(0).getId());
-//                int id = data.getInt(0);
-//                String name = data.getString(1);
-//                String material = data.getString(2);
-//                String making = data.getString(3);
-//                String img = data.getString(4);
-//                String tips = data.getString(5);
-//                int idType = data.getInt(6);
-//                int bookmark = data.getInt(7);
-//
-//                Eating eating = new Eating();
-//                eating.setId(id);
-//                eating.setName(name);
-//                eating.setMaterial(material);
-//                eating.setMaking(making);
-//                eating.setImage(img);
-//                eating.setTips(tips);
-//                eating.setIdType(idType);
-//                eating.setBookmark(bookmark);
+                try {
+                    String tmp = "INSERT INTO eating " +
+                            "VALUES (" + eatings.get(0).getId() + ",'" + eatings.get(0).getName() + "'," +
+                            "'" + eatings.get(0).getMaterial() + "','" + eatings.get(0).getMaking() + "'," +
+                            "'" + eatings.get(0).getImage() + "','" + eatings.get(0).getTips() + "','" + eatings.get(0).getIdType() + "',0)";
+                    MainActivity.dataBaseHelper.QueryData(tmp);
+                }catch (Exception e){
+                    MainActivity.dataBaseHelper.QueryData("UPDATE eating SET img = 1  WHERE id='" + eatings.get(0).getId() + "'");
+                }
             }
 
             @Override
@@ -239,17 +216,17 @@ public class FragmentTotal extends BaseFragment {
 //        }
 //    }
 
-//    public void updateBookmark() {
-//        FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");
-//        if (fragmentBookmark != null) {
-//            fragmentBookmark.updateMyself();
-//        }
-//
-//        FragmentEating fragmentEating = (FragmentEating) getFragmentManager().findFragmentByTag("eating");
-//        if (fragmentEating != null) {
-//            fragmentEating.updateData();
-//        }
-//    }
+    public void updateBookmark() {
+        FragmentBookmark fragmentBookmark = (FragmentBookmark) getFragmentManager().findFragmentByTag("bookmark");
+        if (fragmentBookmark != null) {
+            fragmentBookmark.updateMyself();
+        }
+
+        FragmentEating fragmentEating = (FragmentEating) getFragmentManager().findFragmentByTag("eating");
+        if (fragmentEating != null) {
+            fragmentEating.updateData();
+        }
+    }
 
     @Override
     public void onDestroyView() {

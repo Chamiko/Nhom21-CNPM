@@ -1,5 +1,6 @@
 package com.example.banhnhandau.mycooking.bookmark;
 
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -68,43 +69,42 @@ public class FragmentBookmark extends BaseFragment {
 
     }
 
-//    private void getDataEating() {
-//        eatings.clear();
-//        Cursor data = MainActivity.dataBaseHelper.
-//                GetData("SELECT * FROM eating WHERE bookmark = 1");
-//        while (data.moveToNext()) {
-//            int id = data.getInt(0);
-//            Log.d("id", id + " ");
-//            String name = data.getString(1);
-//            String material = data.getString(2);
-//            String making = data.getString(3);
-//            byte[] img = data.getBlob(4);
-//            String tips = data.getString(5);
-//            int idType = data.getInt(6);
-//            int bookmark = data.getInt(7);
-//
-//            Eating eating = new Eating();
-//            eating.setId(id);
-//            eating.setName(name);
-//            eating.setMaterial(material);
-//            eating.setMaking(making);
-//            eating.setImg(img);
-//            eating.setTips(tips);
-//            eating.setIdType(idType);
-//            eating.setBookmark(bookmark);
-//
-//            eatings.add(eating);
-//        }
-//        adapter.notifyDataSetChanged();
-//    }
+    private void getDataEating() {
+        eatings.clear();
+        Cursor data = MainActivity.dataBaseHelper.
+                GetData("SELECT * FROM eating WHERE bookmark = 1");
+        while (data.moveToNext()) {
+            int id = data.getInt(0);
+            String name = data.getString(1);
+            String material = data.getString(2);
+            String making = data.getString(3);
+            String image = data.getString(4);
+            String tips = data.getString(5);
+            int idType = data.getInt(6);
+            int bookmark = data.getInt(7);
+
+            Eating eating = new Eating();
+            eating.setId(id);
+            eating.setName(name);
+            eating.setMaterial(material);
+            eating.setMaking(making);
+            eating.setImage(image);
+            eating.setTips(tips);
+            eating.setIdType(idType);
+            eating.setBookmark(bookmark);
+
+            eatings.add(eating);
+        }
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-//        getDataEating();
+        getDataEating();
     }
 
-//    public void updateMyself() {
-//        getDataEating();
-//    }
+    public void updateMyself() {
+        getDataEating();
+    }
 }
